@@ -2,7 +2,7 @@
 <html lang="en" role="document">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" conten="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>KittyTasker - A cute and useful to-do list app for cat lovers!</title>
     </head>
     <body>
@@ -16,7 +16,26 @@
                 <section class="task-form-container" role="form" aria-labelledby="form-heading">
                     <h2 id="form-heading" class="visually-hideen">Add New Task</h2>
                     <form id="task-form">
-                        <!-- Form inputs will be added here later -->
+                        <div class="form-group">
+                            <label for="task-input">Task Description</label>
+                            <input type="text" id="task-input" name="task-input" placeholder="Enter your task here" required minlength="3">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priority-select"></label>
+                            <select id="priority-select" name="priority-select" aria-label="Select task priority">
+                                <option value="medium" selected>Medium Priority</option>
+                                <option value="low">Low Priority</option>
+                                <option value="high">High Priority</option>
+                            </select>
+                            <label for="task-date">Due Date</label>
+                            <input type="date" id="task-date" name="task-date" aria-label="Select task due date" required min="2025-10-21">
+                        </div>
+                        <span id="form-error" class="error" style="display: none;"></span>
+
+                        <div class="form-actions">
+                            <button type="submit" class="add-btn">Add Task</button>
+                        </div>
                     </form>
                 </section>
 
@@ -47,5 +66,6 @@
                 <p>Created with HTML, CSS and JavaScript</p>
             </footer>
         </div>
+        <script src="app.js"></script>
     </body>
 </html>
