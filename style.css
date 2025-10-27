@@ -1,0 +1,79 @@
+/*
+* KittyTasker Stylesheet
+* Basic styling for the KittyTasker to-do list app!
+*/
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Poiret One;
+    line-height: 2;
+    color: #2c2c2c;
+    background-color: #fbe4e4;
+    min-height: 100vh;
+    padding: 20px 15px;
+}
+
+/* Typography */
+h1, h2, h3 {
+    font-family: Lobster;
+    color: #533B4D;
+}
+
+/* App Container */
+.app-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Header */
+.app-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.app-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #A53860;
+    margin-bottom: 5px;
+}
+
+.app-subtitle {
+    color: #F564A9;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Main Card*/
+.main-card {
+    background-color: white;
+    border-radius: 10%;
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+}
+
+/* Form Section Basic Styling */
+.task-form-container {
+    padding: 25px;
+    background: linear-gradient(to right, #FFD6BA, #FFE8CD);
+}
+
+/* Task Section Basic Styling */
+.tasks-container {
+    padding: 25px;
+    background: linear-gradient(to right, #FFE8CD, #FFDCDC);
+}
+
+/* Footer */
+.app-footer {
+    margin-top: 25px;
+    color: #EF88AD;
+    font-size: 14px;
+    font-weight: 600;
+}
