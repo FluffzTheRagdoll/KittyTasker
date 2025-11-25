@@ -11,7 +11,7 @@
 }
 
 body {
-    font-family: Poiret One;
+    font-family: Poiret One, Roboto;
     line-height: 2;
     color: #2c2c2c;
     background-color: #fbe4e4;
@@ -21,7 +21,7 @@ body {
 
 /* Typography */
 h1, h2, h3 {
-    font-family: Lobster;
+    font-family: Lobster, Roboto;
     color: #533B4D;
 }
 
@@ -53,21 +53,213 @@ h1, h2, h3 {
 /* Main Card*/
 .main-card {
     background-color: white;
-    border-radius: 10%;
+    border-radius: 60px;
     box-shadow: 0 25px 25px rgba(0, 0, 0, 0.07);
     overflow: hidden;
 }
 
-/* Form Section Basic Styling */
+/* Form Section */
 .task-form-container {
     padding: 25px;
     background: linear-gradient(to right, #FFD6BA, #FFE8CD);
 }
 
-/* Task Section Basic Styling */
+#task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group label{
+    display: block;
+    margin-bottom: 5px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#task-input, #task-priority, #task-date {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+    background-color: white;
+}
+
+#task-input:focus, #task-priority:focus, #task-date:focus {
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+button[type="submit"] {
+    background-color: #FFC6C6;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.error {
+    background-color: white;
+    color: #43334C;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 14px;
+    display: block;
+}
+
+/* Task Section */
 .tasks-container {
     padding: 25px;
     background: linear-gradient(to right, #FFE8CD, #FFDCDC);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid white;
+}
+
+.section-title {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+/* Task Filter Navigation */
+nav {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-btn {
+    background: none;
+    border: none;
+    font-family: Limelight;
+    font-weight: 600;
+    color: #533B4D;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.filter-btn.active {
+    color: #43334C;
+    font-weight: 500;
+}
+
+/* Task List */
+.task-item {
+    list-style-type: none;
+}
+
+/* Task Item Styling */
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 5px;
+    border-bottom: 2.5px solid rgba(255, 255, 255, 0.773);
+    margin-bottom: 20px;
+}
+
+/* Priority Indicators */
+.task-item-high {
+    border-left: 4px solid #f99ea6;
+}
+
+.task-item-medium {
+    border-left: 4px solid #fcc077;
+}
+
+.task-item-low {
+    border-left: 4px solid #acf9b4;
+}
+
+/* Custom Checkbox */
+.task-checkbox {
+    margin-right: 15px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    accent-color: #E83C91;
+}
+
+/* Task Content */
+.task-content {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.task-text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.task-details {
+    font-size: 12px;
+    font-weight: 500;
+    color: black;
+}
+
+.task-completed .task-text {
+    text-decoration: line-through;
+    color: #535353;
+}
+
+/* Delete Button */
+.delete-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-family: Limelight;
+    font-weight: 600;
+    color: #533B4D;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 30px 20px;
+    color: #a0a0a0;
+}
+
+/* Task Summary */
+.task-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5px 5px 5px;
+}
+
+/* Clear completed button */
+#clear-completed-btn {
+    background: none;
+    border: none;
+    font-family: Limelight;
+    font-weight: 600;
+    color: #533B4D;
+    cursor: pointer;
+}
+
+/* Image styles */
+#light-brown-kitten-with-green-eyes {
+    height: 150px;
+    margin-bottom: 0px;
+    z-index: 1;
+    flex: 10;
 }
 
 /* Footer */
@@ -76,4 +268,50 @@ h1, h2, h3 {
     color: #EF88AD;
     font-size: 14px;
     font-weight: 600;
+}
+
+/* Media Query */
+@media (max-width: 600px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px
+    }
+
+    nav {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .form-actions {
+        justify-content: stretch;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+    }
+
+    .tasks-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    #clear-completed-btn {
+        align-self: flex-end;
+    }
+
+    /* Optimize for Touch */
+    .task-checkbox {
+        width: 24px;
+        height: 24px;
+    }
+
+    .delete-btn {
+        padding: 8px;
+    }
+
+    .filter-btn {
+        padding: 8px 5px;
+    }
 }
