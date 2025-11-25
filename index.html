@@ -13,6 +13,14 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Lobster&family=Poiret+One&display=swap" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Limelight&display=swap" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     </head>
     <body>
         <div class="app-container" role="application" aria-label="KittyTasker cute to-do list app">
@@ -20,11 +28,13 @@
                 <h1 class="app-title">KittyTasker</h1>
                 <p class="app-subtitle">Organise your day with the help of adorable cats and achieve your goals, one at a time!</p>
             </header>
-
-            <img src="Light brown kitten.png" height="300" alt="Light brown kitten with green eyes">
+            <div>
+              <img src="assets/Light brown kitten.png" alt="Light brown kitten with green eyes" id="light-brown-kitten-with-green-eyes">
+            </div>
+            
             <main class="main-card" role="main" aria-label="Task management interface">
                 <section class="task-form-container" role="form" aria-labelledby="form-heading">
-                    <h2 id="form-heading" class="visually-hideen">Add New Task</h2>
+                    <h2 id="form-heading" class="visually-hidden">Add New Task</h2>
                     <form id="task-form">
                         <div class="form-group">
                             <label for="task-input">Task Description</label>
@@ -33,15 +43,15 @@
 
                         <div class="form-group">
                             <label for="priority-select"></label>
-                            <select id="priority-select" name="priority-select" aria-label="Select task priority">
+                            <select id="task-priority" name="priority-select" aria-label="Select task priority">
                                 <option value="medium" selected>Medium Priority</option>
                                 <option value="low">Low Priority</option>
                                 <option value="high">High Priority</option>
                             </select>
                             <label for="task-date">Due Date</label>
-                            <input type="date" id="task-date" name="task-date" aria-label="Select task due date" required min="2025-10-21">
+                            <input type="date" id="task-date" name="task-date" aria-label="Select task due date" required>
                         </div>
-                        <span id="form-error" class="error" style="display: none;"></span>
+                        <span class="error" id="form-error"></span>
 
                         <div class="form-actions">
                             <button type="submit" class="add-btn">Add Task</button>
@@ -62,7 +72,32 @@
                     </div>
                     
                     <ul id="task-list" role="tabpanel" aria-live="polite">
-                        <!-- Task items will be dynamically inserted here -->
+                         <li class="task-item task-item-high">
+                            <input type="checkbox" class="task-checkbox">
+                            <div class="task-content">
+                                <p class="task-text">Study English and Business Studies</p>
+                                <small class="task-details">Priority: High | Due: Today</small>
+                            </div>
+                            <button class="delete-btn">Delete</button>
+                         </li>
+
+                         <li class="task-item task-item-medium">
+                            <input type="checkbox" class="task-checkbox">
+                            <div class="task-content">
+                                <p class="task-text">Make Bellona's birthday art</p>
+                                <small class="task-details">Priotity: Medium | Due: Tomorrow</small>
+                            </div>
+                            <button class="delete-btn">Delete</button>
+                         </li>
+
+                         <li class="task-item task-item-low">
+                            <input type="checkbox" class="task-checkbox">
+                            <div class="task-content">
+                                <p class="task-text">Read 'False Value'</p>
+                                <small class="task-details">Priotity: Low | Due: Anytime</small>
+                            </div>
+                            <button class="delete-btn">Delete</button>
+                         </li>
                     </ul>
     
                     <div class="task-summary" role="status" aria-live="polite">
