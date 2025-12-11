@@ -20,12 +20,91 @@ var taskList;
 var itemsLeft;
 var filterButtons;
 
-// Updates the document title with task count
+/**
+ * Updates the document title with task count
+ */
 function updateDocumentTitle () {
-    document.title = "KittyTasker - " + tasks.length + " Tasks";
+    if(tasks.length === 1){
+        document.title = "KittyTasker - " + tasks.length + " Task";
+    } else {
+        document.title = "KittyTasker - " + tasks.length + " Tasks";
+    }
 }
 
-// Intitalise the application
+/**
+ * Updates the displayed task count
+ */
+function updateTaskCount() {
+    itemsLeft.textContent = tasks.length;
+    updateDocumentTitle();
+}
+
+/**
+ * Validates task description
+ * @param {string} description - The task description to validate
+ * @returns {boolean} - Whether the description is valid
+ */
+function isValidTaskDescription(description) {
+    return description !== '' && description.length >= 3;
+}
+
+/**
+ * Creates a new task object
+ * @param {string} description - The task description
+ * @param {string} priority - The task priority
+ * @param {string} date - The due date for the task
+ * @returns {Object} - The new task object 
+ */
+function createTaskObject(description, priority, date) {
+    return {
+        id: Date.now(),
+        description: description,
+        priority: priority,
+        date: date,
+        completed: false
+    }  
+    
+}
+
+/**
+ * Handle task form submission
+ * @param {Event} e - The form submission event
+ */
+function handleFormSubmit(e) {
+    // Prevent the default form submission
+    e.preventDefault();
+
+    // Get form data
+    var description = taskInput.value.trim();
+    var priority = taskPriority.value;
+    var date = taskDate.value;
+
+    // Validate description
+    if(!isValidTaskDescription(description)) {
+        alert('Please enter a valid task description (at least 3 characters)');
+        taskInput.focus();
+        return;
+    }
+
+    // Create new task object
+    var newTask = createTaskObject(description, priority, date);
+
+    // Add to tasks array
+    tasks.push(newTask);
+
+    // Update the UI
+    updateTaskCount();
+
+    console.log('Task added:', newTask);
+    console.log('Total tasks:', tasks.length)
+
+    // Reset form
+    taskForm.reset();
+}
+
+/**
+ * Initialise the application
+ */
 function initApp() {
     console.log('Intialising KittyTasker app.');
 
@@ -42,9 +121,8 @@ function initApp() {
     // Select filter buttons
     filterButtons = document.querySelectorAll('.filter-btn');
 
-    // Log elements to verify selections
-    console.log('Form element:', taskForm);
-    console.log('Filter buttons:', filterButtons);
+    // Add event listeners
+    taskForm.addEventListener('submit', handleFormSubmit);
 
     // Update the document title
     updateDocumentTitle();
