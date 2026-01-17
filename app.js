@@ -37,6 +37,12 @@ function updateDocumentTitle () {
 function updateTaskCount() {
     itemsLeft.textContent = tasks.length;
     updateDocumentTitle();
+
+    if(tasks.length === 1) {
+        itemsLeft.textContent = `${tasks.length} item left`;
+    } else {
+        itemsLeft.textContent = `${tasks.length} items left`;
+    }
 }
 
 /**
@@ -67,6 +73,55 @@ function createTaskObject(description, priority, date) {
 }
 
 /**
+ * Renders a single task element
+ * @param {Object} taskData - The task data object
+ * @returns {HTMLElement} - The created task list item
+ */
+function renderTaskElement(taskData) {
+  // Crete the list item element
+  var li = document.createElement('li');
+  li.className = 'task-item';
+
+
+  // Add the priority class
+  li.classList.add('task-item-' + taskData.priority);
+
+  // Create and add the checkbox
+  var checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.className = 'task-checkbox';
+  li.appendChild(checkbox);
+
+  // Create and add content container
+  var content = document.createElement('div');
+  content.className = 'task-content';
+
+  // Add task title
+  var title = document.createElement('p');
+  title.className = 'task-text';
+  title.textContent = taskData.description;
+  content.appendChild(title);
+
+  // Add task details
+  var details = document.createElement('small');
+  details.className = 'task-details';
+  details.textContent = 'Priority: ' + taskData.priority + ' | Due: ' + taskData.date;
+  content.appendChild(details);
+  
+  // Add content to the list item
+  li.appendChild(content);
+
+  // Add delete button
+  var deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.textContent = 'Delete';
+  li.appendChild(deleteBtn);
+
+  return li;
+}
+
+
+/**
  * Handle task form submission
  * @param {Event} e - The form submission event
  */
@@ -92,14 +147,53 @@ function handleFormSubmit(e) {
     // Add to tasks array
     tasks.push(newTask);
 
-    // Update the UI
-    updateTaskCount();
-
-    console.log('Task added:', newTask);
-    console.log('Total tasks:', tasks.length)
+    // Render the new task
+    renderTasks();
 
     // Reset form
     taskForm.reset();
+ }
+
+/**
+ * Renders all tasks in the tasks array
+ */
+function renderTasks() {
+  // Clear exisiting tasks from the DOM
+  taskList.innerHTML = '';
+
+  // Render each task
+  for (var i = 0; i < tasks.length; i++) {
+    var taskElement = renderTaskElement(tasks[i]);
+    taskList.appendChild(taskElement);
+  }
+
+  // Update task count
+  updateTaskCount();
+}
+
+/**
+ * Handle filter button clicks
+ * @param {Event} e - The click event
+ */
+function handleFilterClick(e) {
+    // Check if a fliter button was clicked
+    if(e.target.classList.contains('filter-btn')) {
+        // Get the filter type from the data-filter attribute
+        var filterType = e.target.getAttribute('data-filter');
+
+        // Update the current filter
+        currentFilter = filterType;
+
+        // Update the active class on filter buttons
+        for (var i = 0; i < filterButtons.length; i++) {
+            filterButtons[i].classList.remove('active');
+        }
+        e.target.classList.add('active');
+
+        console.log('Filter changed to: ', filterType);
+
+        // Actual filtering coming soon
+    }
 }
 
 /**
@@ -123,10 +217,13 @@ function initApp() {
 
     // Add event listeners
     taskForm.addEventListener('submit', handleFormSubmit);
+    document.querySelector('nav').addEventListener('click', handleFilterClick);
+
+    // Render tasks (will be empty intially)
+    renderTasks();
 
     // Update the document title
     updateDocumentTitle();
-    
     console.log('KittyTasker app intialised');
 }
 
