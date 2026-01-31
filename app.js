@@ -55,6 +55,29 @@ function isValidTaskDescription(description) {
 }
 
 /**
+ * Removes a task
+ * @param {number} taskId - The ID of the task to remove
+ */
+function removeTask(taskId) {
+  // Find all tasks except the one to remove
+  var newTasks = [];
+  for(var i = 0; i < tasks.lenght; i++) {
+    if(tasks[i].id !== taskId) {
+      newTasks.push(tasks[i]);
+    }
+  }
+
+  // Update tasks array
+  tasks = newTasks;
+
+  // Log the change
+  console.log('Task removed!');
+
+  // Re-render tasks to update the UI
+  renderTasks();
+}
+
+/**
  * Creates a new task object
  * @param {string} description - The task description
  * @param {string} priority - The task priority
@@ -68,8 +91,7 @@ function createTaskObject(description, priority, date) {
         priority: priority,
         date: date,
         completed: false
-    }  
-    
+    };
 }
 
 /**
@@ -78,18 +100,26 @@ function createTaskObject(description, priority, date) {
  * @returns {HTMLElement} - The created task list item
  */
 function renderTaskElement(taskData) {
-  // Crete the list item element
+  // Create the list item element
   var li = document.createElement('li');
   li.className = 'task-item';
 
+  // Add data-id attribute to connect element with task data
+  li.setAttribute('data-id', taskData.id);
 
   // Add the priority class
   li.classList.add('task-item-' + taskData.priority);
 
-  // Create and add the checkbox
+  // Add completed class if task is completed
+  if(taskData.completed) {
+    li.classList.add('task-completed');
+  }
+
+  // Create and add the checkbox with checked status
   var checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.className = 'task-checkbox';
+  checkbox.checked = taskData.completed;
   li.appendChild(checkbox);
 
   // Create and add content container
@@ -150,6 +180,9 @@ function handleFormSubmit(e) {
     // Render the new task
     renderTasks();
 
+    console.log('Task added:', newTask);
+    console.log('Total tasks:', tasks.length);
+
     // Reset form
     taskForm.reset();
  }
@@ -170,6 +203,73 @@ function renderTasks() {
   // Update task count
   updateTaskCount();
 }
+
+/**
+ * Finds a task by its ID
+ * @param {number} taskId - The ID to search for
+ * @returns {Object|null} - The found task or null
+ */
+function findTaskById(taskId) {
+  for(var i = 0; i < tasks.length; i++) {
+    if(tasks[i].id === taskId) {
+      return tasks[i];
+    }
+  }
+  return null;
+}
+
+/**
+ * Toggles a task's completion status
+ * @param {number} taskId - The ID  of the task toggle
+ */
+function toggleTaskComplete(taskId) {
+  // Find task by ID
+  var task = findTaskById(taskId);
+
+  if(task) {
+    // Toggle completion status
+    task.completed = !task.completed;
+
+    // Log the change
+    console.log(task.completed ? 'Task marked complete!' : 'Task marked incomplete!');
+
+    // Re-render tasks to update the UI
+    renderTasks();
+  }
+}
+
+/**
+ * Handle task list interactions
+ * @param {Event} e - The click event
+ */
+function handleTaskListClick(e) {
+  console.log('Task list clicked:', e.target);
+
+  // Find the closest task item
+  var taskItem = e.target;
+  while(taskItem && !taskItem.classList.contains('task-item')) {
+    taskItem = taskItem.parentElement;
+  }
+
+  // Return if no task item found
+  if(!taskItem) return;
+
+  // Get task ID
+  var taskId = parseInt(taskItem.getAttribute('data-id'));
+  console.log('Clicked task ID:', taskId);
+
+  // Check which element was clicked
+  if(e.target.classList.contains('task-checkbox')) {
+    // Checkbox clicked
+    toggleTaskComplete(taskId);
+  } else if(e.target.classList.contains('delete-btn')) {
+    // Delete button clicked
+    if(confirm('Are you sure you want to delete this task?')) {
+      removeTask(taskId);
+    }
+  }
+}
+
 
 /**
  * Handle filter button clicks
@@ -218,6 +318,7 @@ function initApp() {
     // Add event listeners
     taskForm.addEventListener('submit', handleFormSubmit);
     document.querySelector('nav').addEventListener('click', handleFilterClick);
+    taskList.addEventListener('click', handleTaskListClick);
 
     // Render tasks (will be empty intially)
     renderTasks();
