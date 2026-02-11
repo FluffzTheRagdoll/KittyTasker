@@ -21,6 +21,30 @@ var itemsLeft;
 var filterButtons;
 
 /**
+ * Gets today's date formatted for HTML date input (YYYY-MM-DD)
+ */
+function getFormattedToday() {
+  var today = new Date();
+
+  // Get year, month and dy components
+  var year = today.getFullYear();
+  var month = today.getMonth() + 1; // Months are 0-based
+  var day = today.getDate();
+
+  // Pad month and day with leading zeros if needed
+  if(month < 10) {
+    month = '0' + month;
+  }
+
+  if(day < 10) {
+    day = '0' + day;
+  }
+
+  // Return formatted string (YYYY-MM-DD)
+  return year + '-' + month + '-' + day;
+}
+
+/**
  * Updates the document title with task count
  */
 function updateDocumentTitle () {
@@ -46,12 +70,32 @@ function updateTaskCount() {
 }
 
 /**
- * Validates task description
- * @param {string} description - The task description to validate
- * @returns {boolean} - Whether the description is valid
+ * Validates a task to ensure it meets requirements
+ * @param {string} description - The task description
+ * @param {string} date - The due date
+ * @returns {Array} - Array of error messages (empty if valid)
  */
-function isValidTaskDescription(description) {
-    return description !== '' && description.length >= 3;
+function validateTask(description, date) {
+  var errors = [];
+
+  // Description validation
+  if(!description) {
+    errors.push('Task description is required');
+  } else if(description.length < 3) {
+    errors.push('Task description must be at least 3 characters long');
+  }
+
+  // Date validation
+  if(!date) {
+    errors.push('Due date is required');
+  } else {
+    var today = getFormattedToday();
+    if(date < today) {
+      errors.push('Due date cannot be in the past');
+    }
+  }
+
+  return errors;
 }
 
 /**
@@ -61,7 +105,7 @@ function isValidTaskDescription(description) {
 function removeTask(taskId) {
   // Find all tasks except the one to remove
   var newTasks = [];
-  for(var i = 0; i < tasks.lenght; i++) {
+  for(var i = 0; i < tasks.length; i++) {
     if(tasks[i].id !== taskId) {
       newTasks.push(tasks[i]);
     }
@@ -75,6 +119,46 @@ function removeTask(taskId) {
 
   // Re-render tasks to update the UI
   renderTasks();
+}
+
+/**
+ * Adds a new task
+ * @param {string} description - The task description
+ * @param {string} priority - The task priority
+ * @param {string} date - The due date
+ */
+function addTask(description, priority, date) {
+  // Validate task
+  var errors = validateTask(description, date);
+  if(errors.length > 0) {
+    formError.textContent = errors.join('. ');
+    formError.style.display = 'block';
+    return false;
+  }
+
+  // Clear previous errors
+  formError.textContent = '';
+  formError.style.display = 'none';
+
+  // Create new task object
+  var newTask = {
+    id: Date.now(),
+    description: description,
+    priority: priority,
+    date: date,
+    completed: false
+  };
+
+  // Add to tasks array
+  tasks.push(newTask);
+
+  // Render all tasks
+  renderTasks();
+
+  // Show confirmation
+  console.log('Task added successfully!');
+
+  return true;
 }
 
 /**
@@ -164,28 +248,32 @@ function handleFormSubmit(e) {
     var priority = taskPriority.value;
     var date = taskDate.value;
 
-    // Validate description
-    if(!isValidTaskDescription(description)) {
-        alert('Please enter a valid task description (at least 3 characters)');
-        taskInput.focus();
-        return;
+    // Add task
+    var success = addTask(description, priority, date);
+
+    // Reset form if successful
+    if(success) {
+      resetFormWithCleanup();
     }
+}
 
-    // Create new task object
-    var newTask = createTaskObject(description, priority, date);
+/**
+ * Resets the form and clears error messages
+ */
+function resetFormWithCleanup() {
+  // Reset the form
+  taskForm.reset();
 
-    // Add to tasks array
-    tasks.push(newTask);
+  // Set the date field back to today's date
+  taskDate.value = getFormattedToday();
 
-    // Render the new task
-    renderTasks();
+  // Clear any errors
+  formError.textContent = '';
+  formError.style.display = 'none';
 
-    console.log('Task added:', newTask);
-    console.log('Total tasks:', tasks.length);
-
-    // Reset form
-    taskForm.reset();
- }
+  // Focus back on the input
+  taskInput.focus();
+}
 
 /**
  * Renders all tasks in the tasks array
@@ -307,13 +395,20 @@ function initApp() {
     taskInput = document.getElementById('task-input');
     taskPriority = document.getElementById('task-priority');
     taskDate = document.getElementById('task-date');
+    formError = document.getElementById('form-error');
+
+    // Hide the form error box initially
+    formError.style.display = 'none';
 
     // Select task list elements
     taskList = document.getElementById('task-list');
     itemsLeft = document.getElementById('items-left');
 
-    // Select filter buttons
+    // Select all filter buttons
     filterButtons = document.querySelectorAll('.filter-btn');
+
+    // Set default date to today
+    taskDate.value = getFormattedToday();
 
     // Add event listeners
     taskForm.addEventListener('submit', handleFormSubmit);
