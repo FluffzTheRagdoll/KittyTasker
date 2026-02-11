@@ -108,11 +108,12 @@ button[type="submit"] {
 }
 
 .error {
-  background-color: white;
+  background-color: #ffffff;
   color: #43334C;
   padding: 8px 12px;
   border-radius: 5px;
   margin-top: 5px;
+  font-weight: 600;
   font-size: 14px;
   display: block;
 }
